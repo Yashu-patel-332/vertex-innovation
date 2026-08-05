@@ -1,0 +1,36 @@
+<%- include('partials') %>
+    <main class="admin-main">
+        <div class="admin-title">
+            <p class="kicker">CONTENT</p>
+            <h1>Manage blog</h1>
+        </div>
+        <section class="admin-panel">
+            <h2>Create post</h2>
+            <form class="admin-form" method="post" enctype="multipart/form-data">
+                <input required name="title" placeholder="Post title">
+                <input required name="excerpt" placeholder="Brief excerpt">
+                <input type="file" name="image" accept="image/*">
+                <textarea required name="content" placeholder="Post content"></textarea>
+                <label class="check">
+                    <input type="checkbox" name="published">
+                    Publish now
+                </label>
+                <button class="btn primary">Create post</button>
+            </form>
+        </section>
+        <section class="admin-panel">
+            <h2>Posts</h2>
+            <%items.forEach(x=>{%><form class="admin-form edit" action="/admin/blogs/<%=x._id%>" method="post"
+                    enctype="multipart/form-data">
+                    <input name="title" value="<%=x.title%>">
+                    <input name="excerpt" value="<%=x.excerpt%>">
+                    <input type="file" name="image" accept="image/*">
+                    <textarea name="content"><%=x.content%></textarea>
+                    <label class="check"><input type="checkbox" name="published" <%=x.published?'checked':''%>>
+                        Published</label><button>Save</button>
+                    <button formaction="/admin/blogs/<%=x._id%>/delete" class="danger">Delete</button>
+                </form>
+                <%})%>
+        </section>
+    </main>
+    <link rel="stylesheet" href="/css/style.css">

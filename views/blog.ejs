@@ -1,0 +1,30 @@
+<%- include('partials/head') %><%- include('partials/nav') %>
+        <section class="page-hero">
+            <p class="kicker">INSIGHTS</p>
+            <h1>Notes on building for the web.</h1>
+            <p>Practical thinking on websites, applications and digital product work.</p>
+        </section>
+        <section class="section">
+            <%if(!blogs.length){%>
+                <div class="empty">
+                    <h2>Articles are on their way.</h2>
+                    <p>We are preparing useful notes to share here soon.</p>
+                </div>
+                <%}else{%>
+                    <div class="card-grid">
+                        <%blogs.forEach(b=>{%>
+                            <article class="card">
+                                <small>
+                                    <%=new Date(b.createdAt).toLocaleDateString()%>
+                                </small>
+                                <h3>
+                                    <%=b.title%>
+                                </h3>
+                                <p>
+                                    <%=b.excerpt%>
+                                </p>
+                            </article>
+                            <%})%>
+                    </div>
+                    <%}%>
+        </section><%- include('partials/footer') %>

@@ -1,0 +1,44 @@
+<%- include('partials/head') %>
+    <%- include('partials/nav') %>
+        <% const safeForm=typeof form==='undefined' ? {} : form; const safeError=typeof error==='undefined' ? null :
+            error; const safeSuccess=typeof success==='undefined' ? null : success; %>
+            <section class="page-hero">
+                <p class="kicker">CONTACT</p>
+                <h1>Let's make something<br>useful together.</h1>
+                <p>Tell us where you are and where you want to go. We will reply as soon as we can.</p>
+            </section>
+            <section class="section contact-layout">
+                <div class="contact-info">
+                    <h2>Start a conversation.</h2>
+                    <p>Whether you have a full brief or an early idea, we would love to hear about it.</p>
+                    <a href="mailto:vertexinnovations.labs@gmail.com">vertexinnovations.labs@gmail.com</a>
+                    <a href="tel:+918320931196">+91 8320931196</a>
+                    <a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp ↗</a>
+                    <!-- <div class="map-frame">
+            <iframe src="<%= mapEmbedUrl %>" title="Vertex Web location map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>
+        <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Vertex%20Web" target="_blank" rel="noopener">Open in Google Maps ↗</a> -->
+                </div>
+                <form class="contact-form" method="post" action="/contact">
+                    <% if(safeError){ %>
+                        <div class="notice error">
+                            <%=safeError%>
+                        </div>
+                        <% } %>
+                            <% if(safeSuccess){ %>
+                                <div class="notice success">
+                                    <%=safeSuccess%>
+                                </div>
+                                <% } %>
+                                    <label>Name*<input required name="name" value="<%=safeForm.name||''%>"></label>
+                                    <label>Email*<input required type="email" name="email"
+                                            value="<%=safeForm.email||''%>"></label>
+                                    <label>Phone<input name="phone" value="<%=safeForm.phone||''%>"></label>
+                                    <label>What can we help with?*<input required name="subject"
+                                            value="<%=safeForm.subject||''%>"></label>
+                                    <label>Tell us a little more*<textarea required name="message"
+                                            rows="6"><%=safeForm.message||''%></textarea></label>
+                                    <button class="btn primary" type="submit">Send message →</button>
+                </form>
+            </section>
+            <%- include('partials/footer') %>
