@@ -5,7 +5,7 @@ console.log("SMTP_PORT:", process.env.SMTP_PORT);
 console.log("SMTP_USER:", process.env.SMTP_USER);
 console.log("CONTACT_TO_EMAIL:", process.env.CONTACT_TO_EMAIL);
 
-
+const User = require("./models/User.js");
 const path = require('path');
 const express = require('express');
 const session = require('express-session');
@@ -22,6 +22,32 @@ dns.setServers(["1.1.1.1", "8.8.8.8"])
 
 
 connectDB();
+
+async function createDefaultAdmin() {
+    try {
+        const admin = await User.findOne({
+            email: "admin@vertexweb.com"
+        });
+
+        if (!admin) {
+            await User.create({
+                name: "Admin",
+                email: "admin@vertexweb.com",
+                password: "Admin@123",
+                role: "admin"
+            });
+
+            console.log("✅ Default Admin Created");
+        } else {
+            console.log("✅ Admin Already Exists");
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+createDefaultAdmin();
+
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
