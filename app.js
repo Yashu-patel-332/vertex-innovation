@@ -17,9 +17,11 @@ const morgan = require('morgan');
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
 const dns = require("dns")
+ const { verifyEmailConnection } = require("./utils/email.js");
 
-dns.setServers(["1.1.1.1", "8.8.8.8"])
+// dns.setServers(["1.1.1.1", "8.8.8.8"])
 
+dns.setDefaultResultOrder("ipv4first");
 
 connectDB();
 
@@ -69,3 +71,8 @@ app.listen(port, () =>
     console.log(`Vertex Web running on port http://localhost:${port}`
 
     ));
+
+
+verifyEmailConnection()
+    .then(() => console.log("SMTP OK"))
+    .catch(err => console.error("SMTP FAILED:", err));

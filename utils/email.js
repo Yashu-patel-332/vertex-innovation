@@ -24,7 +24,9 @@ const getTransporter = () => {
         auth: {
              user: process.env.SMTP_USER, 
              pass: process.env.SMTP_PASS 
-            }
+            },
+            logger: true,
+            debug: true 
     });
 
     } catch (error) {
@@ -57,4 +59,10 @@ exports.sendContactNotification = async (contact) => {
        console.error("SMTP ERROR:", error.message);
        throw error;
     }
+};
+
+exports.verifyEmailConnection = async () => {
+    const transporter = getTransporter();
+    await transporter.verify();
+    console.log("SMTP Connected Successfully");
 };
