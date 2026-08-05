@@ -103,7 +103,15 @@ exports.submitContact = async (req, res, next) => {
       subject,
       message,
     });
-    await sendContactNotification(contact);
+
+console.log("Saved in DB");
+
+await sendContactNotification(contact);
+
+console.log("Email completed");
+   
+  
+  
     return page(
       200,
       null,

@@ -19,7 +19,7 @@ const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
 const dns = require("dns")
  const { verifyEmailConnection } = require("./utils/email.js");
 
-// dns.setServers(["1.1.1.1", "8.8.8.8"])
+ dns.setServers(["1.1.1.1", "8.8.8.8"])
 
 dns.setDefaultResultOrder("ipv4first");
 
