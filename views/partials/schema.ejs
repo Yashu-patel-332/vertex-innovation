@@ -1,0 +1,38 @@
+<%
+// views/partials/schema.ejs
+// ---------------------------------------------------------------------------
+// CHANGE LOG:
+//  - NEW FILE: Injects Schema.org (JSON-LD) structured data on every public
+//    page so Google can understand the business and website entity.
+//  - Organization: name, URL, logo, contact email/phone and social profiles.
+//  - WebSite: site entity linked to the Organization via @id.
+//  - Uses `res.locals.site` (set in app.js middleware) so it stays DRY.
+  const __s = (typeof site !== "undefined" && site) ? site : {
+    name: "Vertex Innovations Labs", url: "/", email: "", phone: "",
+    instagram: "", ogImage: "/images/logo.jpeg",
+  };
+  const __og = __s.ogImage || __s.url + "/images/logo.jpeg";
+%>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "<%= __s.url %>/#organization",
+  "name": "<%= __s.name %>",
+  "url": "<%= __s.url %>",
+  "logo": "<%= __og %>",
+  "email": "<%= __s.email %>",
+  "telephone": "<%= __s.phone %>",
+  "sameAs": [<%- JSON.stringify(__s.instagram) %>]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "<%= __s.url %>/#website",
+  "name": "<%= __s.name %>",
+  "url": "<%= __s.url %>",
+  "publisher": { "@id": "<%= __s.url %>/#organization" }
+}
+</script>

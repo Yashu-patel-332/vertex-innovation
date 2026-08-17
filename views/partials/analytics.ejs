@@ -1,0 +1,49 @@
+<%
+// views/partials/analytics.ejs
+// ---------------------------------------------------------------------------
+// CHANGE LOG:
+//  - NEW FILE: Central Google integration partial included in <head>.
+//  - GA4:   loaded ONLY when NODE_ENV=production AND GA4_MEASUREMENT_ID is set.
+//  - GTM:   loaded only in production AND GTM_CONTAINER_ID is set.
+//  - Ads:   Google Ads conversion config is loaded alongside GA4. To send
+//           conversions through GTM instead, configure Ads inside GTM and
+//           leave GOOGLE_ADS_CONVERSION_ID empty to avoid double counting.
+//  - Guiding rule: no third-party script loads in development.
+  const __prod = process.env.NODE_ENV === "production";
+  const __ga4 = (process.env.GA4_MEASUREMENT_ID || "").trim();
+  const __gtm = (process.env.GTM_CONTAINER_ID || "").trim();
+  const __ads = (process.env.GOOGLE_ADS_CONVERSION_ID || "").trim();
+%>
+<% if (__prod && __gtm) { %>
+<script>
+  // Google Tag Manager snippet
+  (function (w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s),
+      dl = l != "dataLayer" ? "&l=" + l : "";
+    j.async = true;
+    j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, "script", "dataLayer", "<%= __gtm %>");
+</script>
+<noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=<%= __gtm %>" height="0"
+    width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<% } %>
+<% if (__prod && __ga4) { %>
+<script async src="https://www.googletagmanager.com/gtag/js?id=<%= __ga4 %>"></script>
+<script>
+  // Google Analytics 4 global site tag
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag("js", new Date());
+  gtag("config", "<%= __ga4 %>", { anonymize_ip: true });
+  <% if (__ads) { %>
+  // Google Ads conversion linker
+  gtag("config", "AW-<%= __ads %>");
+  <% } %>
+</script>
+<% } %>

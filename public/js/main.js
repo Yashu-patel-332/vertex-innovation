@@ -47,25 +47,29 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".reveal").forEach((e) => observer.observe(e));
 });
 
+// CHANGE: guarded legacy contact-form handler (previously threw a TypeError
+// on every page because no element with id="contactForm" exists).
 const form = document.querySelector("#contactForm");
 
-form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+if (form) {
+  form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    const data = {
-        name: document.querySelector("#name").value,
-        email: document.querySelector("#email").value,
-        message: document.querySelector("#message").value
-    };
+      const data = {
+          name: document.querySelector("#name").value,
+          email: document.querySelector("#email").value,
+          message: document.querySelector("#message").value
+      };
 
-    const response = await fetch("/contact", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    });
+      const response = await fetch("/contact", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+      });
 
-    const result = await response.json();
-    console.log(result);
-});
+      const result = await response.json();
+      console.log(result);
+  });
+}

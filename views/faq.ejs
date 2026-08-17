@@ -1,1 +1,21 @@
-<%- include('partials/head') %><%- include('partials/nav') %><section class="page-hero center"><p class="kicker">FAQ</p><h1>Questions, answered clearly.</h1></section><section class="section faq"><% [['What types of projects do you take on?','We build business websites, landing pages, portfolio sites, MERN applications, APIs and related digital solutions.'],['How do we start a project?','Send us a message with your goals. We will discuss the scope, priorities and the most suitable next step.'],['Will my website work on mobile?','Yes. Responsive design is a core part of every website we build.'],['Can you maintain an existing website?','Yes. We can help with fixes, performance improvements, redesigns and ongoing maintenance.'],['Do you provide hosting and deployment help?','We can support deployment and help you choose an appropriate hosting setup for your project.']].forEach((f,i)=>{%><details <%=i===0?'open':''%>><summary><%=f[0]%><span>+</span></summary><p><%=f[1]%></p></details><%})%></section><%- include('partials/footer') %>
+<%- include('partials/head') %><%- include('partials/nav') %>
+<%# CHANGE: FAQ data defined once, reused for both the FAQPage JSON-LD schema and the visible list %>
+<% const faqs = [
+  { q: 'What types of projects do you take on?', a: 'We build business websites, landing pages, portfolio sites, MERN applications, APIs and related digital solutions.' },
+  { q: 'How do we start a project?', a: 'Send us a message with your goals. We will discuss the scope, priorities and the most suitable next step.' },
+  { q: 'Will my website work on mobile?', a: 'Yes. Responsive design is a core part of every website we build.' },
+  { q: 'Can you maintain an existing website?', a: 'Yes. We can help with fixes, performance improvements, redesigns and ongoing maintenance.' },
+  { q: 'Do you provide hosting and deployment help?', a: 'We can support deployment and help you choose an appropriate hosting setup for your project.' }
+]; %>
+<%# CHANGE: FAQPage structured data for Google rich results (accordion) %>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    <% faqs.forEach((f,i)=>{ %><%- (i ? "," : "") %>{ "@type": "Question", "name": <%- JSON.stringify(f.q) %>, "acceptedAnswer": { "@type": "Answer", "text": <%- JSON.stringify(f.a) %> } }
+    <% }) %>
+  ]
+}
+</script>
+<section class="page-hero center"><p class="kicker">FAQ</p><h1>Questions, answered clearly.</h1></section><section class="section faq"><% faqs.forEach((f,i)=>{ %><details <%= i===0?'open':'' %>><summary><%= f.q %><span>+</span></summary><p><%= f.a %></p></details><% }) %></section><%- include('partials/footer') %>

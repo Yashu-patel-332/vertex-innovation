@@ -1,0 +1,21 @@
+{
+  "name": "Vertex Innovations Labs",
+  "short_name": "Vertex Web",
+  "description": "Vertex Web crafts modern websites, web applications and digital solutions for ambitious businesses and startups.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "/images/logo.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/images/logo.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

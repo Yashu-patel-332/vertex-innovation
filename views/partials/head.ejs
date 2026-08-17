@@ -1,23 +1,61 @@
 <!doctype html>
-<html lang="en">
+<html lang="<%= seo.lang %>">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Vertex Web crafts modern websites, web applications and digital solutions." />
-  <title>
-    <%= title %> | Vertex Web
-  </title>
+  <%# CHANGE: unique per-page title from central config (no duplicate titles) %>
+  <title><%= seo.title %></title>
+  <%# CHANGE: per-page meta description %>
+  <meta name="description" content="<%= seo.description %>" />
+  <%# CHANGE: optional meta keywords %>
+  <meta name="keywords" content="<%= seo.keywords %>" />
+  <%# CHANGE: canonical URL points to the exact public URL of this page %>
+  <link rel="canonical" href="<%= seo.canonicalUrl %>" />
+  <%# CHANGE: robots control (index/follow normally; noindex on 404/error pages) %>
+  <meta name="robots" content="<%= seo.robots %>" />
+  <% if (seo.searchConsoleVerification) { %>
+  <%# CHANGE: Google Search Console verification (paste content value in SEARCH_CONSOLE_VERIFICATION env) %>
+  <meta name="google-site-verification" content="<%= seo.searchConsoleVerification %>" />
+  <% } %>
+
+  <%# CHANGE: Open Graph tags (Facebook, WhatsApp, LinkedIn sharing) %>
+  <meta property="og:type" content="<%= seo.ogType %>" />
+  <meta property="og:site_name" content="<%= seo.siteName %>" />
+  <meta property="og:title" content="<%= seo.title %>" />
+  <meta property="og:description" content="<%= seo.description %>" />
+  <meta property="og:url" content="<%= seo.canonicalUrl %>" />
+  <meta property="og:image" content="<%= seo.ogImage %>" />
+  <meta property="og:locale" content="<%= seo.locale %>" />
+
+  <%# CHANGE: Twitter Card tags %>
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="<%= seo.title %>" />
+  <meta name="twitter:description" content="<%= seo.description %>" />
+  <meta name="twitter:image" content="<%= seo.ogImage %>" />
+
+  <%# CHANGE: favicon + web app manifest + theme color %>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/images/logo.jpeg" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="theme-color" content="<%= seo.themeColor %>" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
     rel="stylesheet" />
+
+  <%# CHANGE: Google Analytics (GA4), Tag Manager and Ads (production only) %>
+  <%- include('analytics') %>
+  <%# CHANGE: Schema.org structured data (Organization + WebSite) %>
+  <%- include('schema') %>
+
   <link rel="stylesheet" href="/css/style.css" />
 </head>
 
 <body>
-  <div class="loader"><span><img src="/images/logo.jpeg" alt=""></span></div>
+  <div class="loader"><span><img src="/images/logo.jpeg" alt="Loading Vertex Web"></span></div>
 </body>
 
 </html>

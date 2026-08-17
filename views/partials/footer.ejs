@@ -2,7 +2,8 @@
 <footer>
     <div class="footer-grid">
         <div>
-            <a class="brand" href="/"><img src="/images/logo.jpeg" alt=""> Vertex Innovations Labs</a>
+            <%# CHANGE: meaningful alt text on the footer brand logo %>
+            <a class="brand" href="/"><img src="/images/logo.jpeg" alt="Vertex Innovations Labs logo"> Vertex Innovations Labs</a>
             <p>Crafting modern websites, web applications & digital solutions.</p>
         </div>
         <div>
@@ -12,9 +13,10 @@
         </div>
         <div>
             <h4>Connect</h4>
-            <a href="mailto:vertexinnovations.labs@gmail.com">vertexinnovations.labs@gmail.com</a>
+            <%# CHANGE: data-track attributes feed the Google Ads / GTM conversion tracking %>
+            <a href="mailto:vertexinnovations.labs@gmail.com" data-track="email">vertexinnovations.labs@gmail.com</a>
             <a href="/contact">Start a project</a>
-            <a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a>
+            <a href="https://wa.me/<%= site.whatsapp %>" target="_blank" rel="noopener" data-track="whatsapp">WhatsApp</a>
         </div>
         <div>
             <h4>Legal</h4>
@@ -25,6 +27,17 @@
     <div class="copyright">© <%= year %> Vertex Innovations Labs. Built with care.</div>
 </footer>
 <button class="to-top" aria-label="Back to top">↑</button>
+<%# CHANGE: exposes Google Ads tracking config to the browser (production only), then loads tracking.js %>
+<script>
+    window.VERTEX_TRACKING = <%- JSON.stringify({
+        enabled: process.env.NODE_ENV === "production" && !!process.env.GOOGLE_ADS_CONVERSION_ID,
+        adsId: process.env.GOOGLE_ADS_CONVERSION_ID || "",
+        phoneLabel: process.env.GOOGLE_ADS_PHONE_LABEL || "PLACEHOLDER_PHONE_LABEL",
+        whatsappLabel: process.env.GOOGLE_ADS_WHATSAPP_LABEL || "PLACEHOLDER_WHATSAPP_LABEL",
+        formLabel: process.env.GOOGLE_ADS_FORM_LABEL || "PLACEHOLDER_FORM_LABEL"
+    }) %>;
+</script>
+<script src="/js/tracking.js"></script>
 <script src="/js/main.js"></script>
 </body>
 
