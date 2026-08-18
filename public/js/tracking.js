@@ -2,9 +2,11 @@
  * ---------------------------------------------------------------------------
  * CHANGE LOG:
  *  - NEW FILE: Google Ads conversion + engagement tracking.
+ *  - CHANGE: phone/whatsapp clicks and contact form submits now fire dedicated
+ *    GA4 events `phone_click`, `whatsapp_click`, `contact_form_submit` (for
+ *    Google Ads conversion import via GA4 key events) alongside the existing
+ *    `engagement` / Ads `conversion` events.
  *  - Reads the tracking config injected by footer.ejs (window.VERTEX_TRACKING).
- *  - Phone click, WhatsApp click and contact form submit are wired to Google
- *    Ads "conversion" events (AW-<ID>/<LABEL>) and generic dataLayer events.
  *  - Works with BOTH Google Tag Manager (dataLayer.push) and direct gtag.
  *  - Uses placeholders for the conversion labels so the structure is ready;
  *    fill GOOGLE_ADS_PHONE_LABEL / WHATSAPP_LABEL / FORM_LABEL in production.
@@ -45,8 +47,12 @@
     push("engagement", { event_category: "Click", event_label: track });
 
     if (track === "phone") {
+      // CHANGE: dedicated GA4 event for Search Console / Ads import
+      push("phone_click", { event_category: "engagement", event_label: "phone" });
       conversion(cfg && cfg.phoneLabel, { event_category: "engagement", event_label: "phone_click" });
     } else if (track === "whatsapp") {
+      // CHANGE: dedicated GA4 event
+      push("whatsapp_click", { event_category: "engagement", event_label: "whatsapp" });
       conversion(cfg && cfg.whatsappLabel, { event_category: "engagement", event_label: "whatsapp_click" });
     } else if (track === "email") {
       push("email_click", { event_category: "engagement" });
@@ -58,6 +64,8 @@
   if (form) {
     form.addEventListener("submit", function () {
       push("engagement", { event_category: "Form", event_label: "contact_form_submit" });
+      // CHANGE: dedicated GA4 event for Ads import
+      push("contact_form_submit", { event_category: "Form", event_label: "contact" });
       conversion(cfg && cfg.formLabel, { event_category: "Form", event_label: "contact" });
     });
   }
